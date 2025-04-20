@@ -88,18 +88,45 @@ bool isSquareValid(Square square)
 
 void getValidMoves(GameModel &model, Moves &validMoves)
 {
+    Piece a;
     // To-do: your code goes here...
+int playerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_WHITE : PIECE_BLACK;
+//int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
 
     for (int y = 0; y < BOARD_SIZE; y++)
-        for (int x = 0; x < BOARD_SIZE; x++)
+        for (int x = 0; x < BOARD_SIZE; x++) 
         {
             Square move = {x, y};
+            if (isSquareValid(move)){
+                for(int y2 = 0, flagY = 0; y2< BOARD_SIZE; y2++){
 
-            // +++ TEST
-            // Lists all empty squares...
-            if (getBoardPiece(model, move) == PIECE_EMPTY)
-                validMoves.push_back(move);
-            // --- TEST
+
+                    for (int x2 = 0 ,flagX = 0; x2 < BOARD_SIZE; x2++){
+                        Square index = {x2, y2};
+                        if (isSquareValid(index)&&(index.x!=move.x)&&(index.y!=move.y)){
+
+                            int indexPiece = getBoardPiece(model, index);
+                            if((indexPiece==playerPiece)){ 
+                                break;
+                            }else if ((indexPiece == PIECE_EMPTY)){
+                                if (flagX==0) break; //Si la flag de que al lado de la casilla vista hay una pieza del oponente, signfica que al lado de la casilla vista, hay un espacio en blanco, no hay movimiento
+
+                            }else {
+                                flagX++;
+                            }
+                            }
+                        } //REANALIZAR ESTA IDEA
+
+
+                    }
+
+                }
+                // +++ TEST
+                // Lists all empty squares...
+                if (getBoardPiece(model, move) == PIECE_EMPTY)
+                    validMoves.push_back(move);
+                // --- TEST
+            }
         }
 }
 
