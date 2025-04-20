@@ -11,6 +11,7 @@
 
 #include "controller.h"
 #include "model.h"
+#include <math.h>
 
 #define GAME_NAME "EDAversi"
 
