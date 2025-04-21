@@ -2,3 +2,5 @@ CMakeLists.txt
 build/
 .DS_Store
 .vscode
+CMakeLists.txt
+
