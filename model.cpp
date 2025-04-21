@@ -90,45 +90,66 @@ void getValidMoves(GameModel &model, Moves &validMoves)
 {
     Piece a;
     // To-do: your code goes here...
-int playerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_WHITE : PIECE_BLACK;
-//int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
+    int playerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_WHITE : PIECE_BLACK;
+    //int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
 
     for (int y = 0; y < BOARD_SIZE; y++)
         for (int x = 0; x < BOARD_SIZE; x++) 
         {
             Square move = {x, y};
-            if (isSquareValid(move)){
-                for(int y2 = 0, flagY = 0; y2< BOARD_SIZE; y2++){
+            
+            if (getBoardPiece(model, move) == PIECE_EMPTY)
 
+            for(int y2=0; y2<BOARD_SIZE; y2++){
 
-                    for (int x2 = 0 ,flagX = 0; x2 < BOARD_SIZE; x2++){
-                        Square index = {x2, y2};
-                        if (isSquareValid(index)&&(index.x!=move.x)&&(index.y!=move.y)){
+                int flagmptyY, flagCounterY, flagPlayerPieceY;
+                
+                for(int x2=0; x2<BOARD_SIZE; x2++){
+                    Square indexMove = {x2,y2};
+                    int indexPiece = getBoardPiece(model,indexMove);
 
-                            int indexPiece = getBoardPiece(model, index);
-                            if((indexPiece==playerPiece)){ 
-                                break;
-                            }else if ((indexPiece == PIECE_EMPTY)){
-                                if (flagX==0) break; //Si la flag de que al lado de la casilla vista hay una pieza del oponente, signfica que al lado de la casilla vista, hay un espacio en blanco, no hay movimiento
+                    if ((indexMove.y==move.y) && (indexMove.x==move.y)){
+                        //hay flag de que habia pieza equipo contrario, mia o blanco antes o ninguna
+                        //break o continue?
+                    }
+                    if (indexPiece==PIECE_EMPTY){
+                        //es la primera pieza? -> flagmpty =1;
+                        //habian piezas antes
+                            //esas eran del oponente, si-> habían antes de las piezas del oponente piezas suyas, si -> valido
+                            //                         |                                                         no-> no valida
+                            //                         no-> indexMovee==move?, si-> no valido
+                            //                                                 no -> hay que ver otros casos, flagmpty =1;
 
-                            }else {
-                                flagX++;
-                            }
-                            }
-                        } //REANALIZAR ESTA IDEA
-
+                    }else if(playerPiece!=indexPiece){
+                        //es
+                    }else if (playerPiece==indexPiece){
+                        //habian piezas el oponente antes ?? si -> valido
+                        //                                   no -> indexMoove==move? no-> continuo
+                        //                                                            si -> movimiento no valido
 
                     }
 
+
                 }
-                // +++ TEST
+            }
+            
+
+        }
+}
+
+/**
+ * a analizar
+ * 1) está vacia 
+ * 2) al lado tiene una pieza del equipo contrario en x
+ *  2.1) al lado tiene una del equipo contrario en Y
+ *  2.2) si no tiene, no valido
+ */
+/* lo del programa antiguo // +++ TEST
                 // Lists all empty squares...
                 if (getBoardPiece(model, move) == PIECE_EMPTY)
                     validMoves.push_back(move);
                 // --- TEST
-            }
-        }
-}
+                */
 
 bool playMove(GameModel &model, Square move)
 {
