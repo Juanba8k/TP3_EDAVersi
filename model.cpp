@@ -8,6 +8,10 @@
 #include "raylib.h"
 
 #include "model.h"
+/**
+ * @brief comentar mejor
+ */
+bool checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece);
 
 void initModel(GameModel &model)
 {
@@ -88,58 +92,113 @@ bool isSquareValid(Square square)
 
 void getValidMoves(GameModel &model, Moves &validMoves)
 {
-    Piece a;
+
     // To-do: your code goes here...
-    int playerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_WHITE : PIECE_BLACK;
-    //int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
+    int playerPiece = (getCurrentPlayer(model) == PLAYER_WHITE) ? PIECE_WHITE : PIECE_BLACK;
+    // int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
 
     for (int y = 0; y < BOARD_SIZE; y++)
-        for (int x = 0; x < BOARD_SIZE; x++) 
+        for (int x = 0; x < BOARD_SIZE; x++)
         {
             Square move = {x, y};
-            
-            if (getBoardPiece(model, move) == PIECE_EMPTY)
-
-            for(int y2=0; y2<BOARD_SIZE; y2++){
-
-                int flagmptyY, flagCounterY, flagPlayerPieceY;
-                
-                for(int x2=0; x2<BOARD_SIZE; x2++){
-                    Square indexMove = {x2,y2};
-                    int indexPiece = getBoardPiece(model,indexMove);
-
-                    if ((indexMove.y==move.y) && (indexMove.x==move.y)){
-                        //hay flag de que habia pieza equipo contrario, mia o blanco antes o ninguna
-                        //break o continue?
-                    }
-                    if (indexPiece==PIECE_EMPTY){
-                        //es la primera pieza? -> flagmpty =1;
-                        //habian piezas antes
-                            //esas eran del oponente, si-> habían antes de las piezas del oponente piezas suyas, si -> valido
-                            //                         |                                                         no-> no valida
-                            //                         no-> indexMovee==move?, si-> no valido
-                            //                                                 no -> hay que ver otros casos, flagmpty =1;
-
-                    }else if(playerPiece!=indexPiece){
-                        //es
-                    }else if (playerPiece==indexPiece){
-                        //habian piezas el oponente antes ?? si -> valido
-                        //                                   no -> indexMoove==move? no-> continuo
-                        //                                                            si -> movimiento no valido
-
-                    }
-
-
-                }
+            if (getBoardPiece(model, move) != playerPiece)
+            { // me paro diciendo que la pieza no esta vacia y es mia, me interesa que pase enemigo-vacia
+                continue;
             }
-            
 
+            checkIndex(model, validMoves, move, '1', playerPiece);
+            printf("hola %d,%d",move.x,move.y);
+            fflush(stdout);
+
+            checkIndex(model, validMoves, move, '2', playerPiece);
+            checkIndex(model, validMoves, move, '3', playerPiece);
+            checkIndex(model, validMoves, move, '4', playerPiece);
+            checkIndex(model, validMoves, move, '5', playerPiece);
+            checkIndex(model, validMoves, move, '6', playerPiece);
+            checkIndex(model, validMoves, move, '7', playerPiece);
+            checkIndex(model, validMoves, move, '8', playerPiece);
         }
 }
 
+bool checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece)
+{
+
+    bool flagOut = false, contraryFlag = false;
+    Square indexMove = move;
+
+    while (flagOut != false)
+    {
+
+        if (operacion == '1')
+        {
+            indexMove.x++;
+        }
+        else if (operacion == '2')
+        {
+            indexMove.x--;
+        }
+        else if (operacion == '3')
+        { // en y 3
+            indexMove.y++;
+        }
+        else if (operacion == '4')
+        { // 4
+            indexMove.y--;
+        }
+        else if (operacion == '5')
+        { // diagonal
+            indexMove.x++;
+            indexMove.y++;
+        }
+        else if (operacion == '6')
+        { // 6
+            indexMove.x--;
+            indexMove.y++;
+        }
+        else if (operacion == '7')
+        { // 7
+            indexMove.x++;
+            indexMove.y--;
+        }
+        else
+        { // 8
+            indexMove.x--;
+            indexMove.y--;
+        }
+
+        if (!isSquareValid(indexMove))
+        { // no es casilla valida, está en borde derecho, salgo
+            flagOut = true;
+        }
+
+        int indexPiece = getBoardPiece(model, indexMove);
+
+        if ((indexPiece == playerPiece))
+        { // si es mia, no puedo mover
+            flagOut = true;
+        }
+        else if ((indexPiece == PIECE_EMPTY))
+        { // si esta vacia me fijo si es al lado de la que estoy reevisando o si ya pasaron por otras piezas enemiga
+
+            if (contraryFlag == true)
+            {
+                validMoves.push_back(indexMove);
+                flagOut = true;
+            }
+            else
+            {
+                flagOut = true;
+            }
+        }
+        else
+        {
+            contraryFlag == true;
+        }
+    }
+}
 /**
  * a analizar
- * 1) está vacia 
+ * 1) está vacia
  * 2) al lado tiene una pieza del equipo contrario en x
  *  2.1) al lado tiene una del equipo contrario en Y
  *  2.2) si no tiene, no valido

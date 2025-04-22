@@ -13,7 +13,7 @@
 Square getBestMove(GameModel &model)
 {
     // To-do: your code goes here...
-
+/*
 
 
     // +++ TEST
@@ -23,5 +23,5 @@ Square getBestMove(GameModel &model)
 
     int index = rand() % validMoves.size();
     return validMoves[index];
-    // --- TEST
+    // --- TEST*/
 }
