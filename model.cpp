@@ -11,7 +11,7 @@
 /**
  * @brief comentar mejor
  */
-bool checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece);
+void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece);
 
 void initModel(GameModel &model)
 {
@@ -120,13 +120,13 @@ void getValidMoves(GameModel &model, Moves &validMoves)
         }
 }
 
-bool checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece)
+void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece)
 {
 
     bool flagOut = false, contraryFlag = false;
     Square indexMove = move;
 
-    while (flagOut != false)
+    while (!flagOut)
     {
 
         if (operacion == '1')
@@ -173,11 +173,11 @@ bool checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
 
         int indexPiece = getBoardPiece(model, indexMove);
 
-        if ((indexPiece == playerPiece))
+        if (indexPiece == playerPiece)
         { // si es mia, no puedo mover
             flagOut = true;
         }
-        else if ((indexPiece == PIECE_EMPTY))
+        else if (indexPiece == PIECE_EMPTY)
         { // si esta vacia me fijo si es al lado de la que estoy reevisando o si ya pasaron por otras piezas enemiga
 
             if (contraryFlag == true)
@@ -192,7 +192,7 @@ bool checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
         }
         else
         {
-            contraryFlag == true;
+            contraryFlag = true;
         }
     }
 }
