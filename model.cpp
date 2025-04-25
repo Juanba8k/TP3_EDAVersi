@@ -6,7 +6,7 @@
  */
 
 #include "raylib.h"
-
+#include <iostream>
 #include "model.h"
 /**
  * @brief comentar mejor
@@ -79,6 +79,7 @@ Piece getBoardPiece(GameModel &model, Square square)
 
 void setBoardPiece(GameModel &model, Square square, Piece piece)
 {
+    std::cout<< square.x << " " <<square.y << std::endl;
     model.board[square.y][square.x] = piece;
 }
 
@@ -101,6 +102,9 @@ void getValidMoves(GameModel &model, Moves &validMoves)
         for (int x = 0; x < BOARD_SIZE; x++)
         {
             Square move = {x, y};
+            if(!isSquareValid(move)){
+                continue;
+            }
             if (getBoardPiece(model, move) != playerPiece)
             { // me paro diciendo que la pieza no esta vacia y es mia, me interesa que pase enemigo-vacia
                 continue;
@@ -165,7 +169,7 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
             indexMove.x--;
             indexMove.y--;
         }
-
+        std::cout << indexMove.x << " " << indexMove.y << std::endl;
         if (!isSquareValid(indexMove))
         { // no es casilla valida, está en borde derecho, salgo
             break;
@@ -219,7 +223,6 @@ bool playMove(GameModel &model, Square move)
         (getCurrentPlayer(model) == PLAYER_WHITE)
             ? PIECE_WHITE
             : PIECE_BLACK;
-
     setBoardPiece(model, move, piece);
 
     // To-do: your code goes here...
