@@ -168,6 +168,7 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
 
         if (!isSquareValid(indexMove))
         { // no es casilla valida, está en borde derecho, salgo
+            break;
             flagOut = true;
         }
 
@@ -182,6 +183,7 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
 
             if (contraryFlag == true)
             {
+
                 validMoves.push_back(indexMove);
                 flagOut = true;
             }
