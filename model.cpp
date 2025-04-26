@@ -133,38 +133,38 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
     while (!flagOut)
     {
 
-        if (operacion == '1')
+        if (operacion == '1')//DERECHA
         {
             indexMove.x++;
         }
-        else if (operacion == '2')
+        else if (operacion == '2')///IZQUIERDA
         {
             indexMove.x--;
         }
-        else if (operacion == '3')
+        else if (operacion == '3')//ABAJO
         { // en y 3
             indexMove.y++;
         }
-        else if (operacion == '4')
+        else if (operacion == '4')//ARRIBA
         { // 4
             indexMove.y--;
         }
-        else if (operacion == '5')
+        else if (operacion == '5')//DIAGONAL ABAJO DERECHA
         { // diagonal
             indexMove.x++;
             indexMove.y++;
         }
-        else if (operacion == '6')
+        else if (operacion == '6')//DIAGONAL ABAJO IZQUIERDA
         { // 6
             indexMove.x--;
             indexMove.y++;
         }
-        else if (operacion == '7')
+        else if (operacion == '7')//DIAGONAL ARRIBA DERECHA
         { // 7
             indexMove.x++;
             indexMove.y--;
         }
-        else
+        else //DIAGONAL ARRIBA IZQUIERDA
         { // 8
             indexMove.x--;
             indexMove.y--;
@@ -223,9 +223,55 @@ bool playMove(GameModel &model, Square move)
         (getCurrentPlayer(model) == PLAYER_WHITE)
             ? PIECE_WHITE
             : PIECE_BLACK;
+    Piece opponentPiece = (piece == PIECE_WHITE) ? PIECE_BLACK : PIECE_WHITE;
+    
     setBoardPiece(model, move, piece);
 
-    // To-do: your code goes here...
+    //DIAGRAMA
+    // (x++,y--)    (x,y--)    (x--,y--)    7   4   8
+    // (x++,y)      JUGADOR    (x--,y)      1   J   2
+    // (x++,y++)    (x,y++)    (x--,y++)    5   3   6
+    // 
+    //LÓGICA:
+    // por cada direccion avanzo mientras encuentro piezas del oponente. Si dsp encuentro una mia, 
+    // retrocedo y flippeo piezas del oponente q estaban en el medio
+    
+    // Flip opponent´s pieces
+    // Define possible moves
+    const int dx[] = { 1, -1, 0, 0, 1, -1, 1, -1 }; 
+    const int dy[] = { 0, 0, 1, -1, 1, 1, -1, -1 }; 
+
+    for (int dir = 0; dir < 8; dir++)
+    {
+        Square current = move;
+        current.x += dx[dir];
+        current.y += dy[dir];
+        bool opponentBetween = false;
+
+        // Move in the direction while we find opponent's pieces
+        while (isSquareValid(current) && getBoardPiece(model, current) == opponentPiece)
+        {
+            current.x += dx[dir];
+            current.y += dy[dir];
+            opponentBetween = true;
+        }
+
+        // If we find one of our own pieces after passing over at least one opponent's piece, 
+        // we go backwards and flip all the opponent's pieces
+        if (opponentBetween && isSquareValid(current) && getBoardPiece(model, current) == piece)
+        {
+            Square flip = move;
+            flip.x += dx[dir];
+            flip.y += dy[dir];
+
+            while (!(flip.x == current.x && flip.y == current.y))
+            {
+                setBoardPiece(model, flip, piece);
+                flip.x += dx[dir];
+                flip.y += dy[dir];
+            }
+        }
+    }
 
     // Update timer
     double currentTime = GetTime();
