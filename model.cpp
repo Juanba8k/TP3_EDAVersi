@@ -5,9 +5,9 @@
  * @copyright Copyright (c) 2023-2024
  */
 
+#include "model.h"
 #include "raylib.h"
 #include <iostream>
-#include "model.h"
 /**
  * @brief comentar mejor
  */
@@ -228,9 +228,9 @@ bool playMove(GameModel &model, Square move)
     setBoardPiece(model, move, piece);
 
     //DIAGRAMA
-    // (x++,y--)    (x,y--)    (x--,y--)    7   4   8
-    // (x++,y)      JUGADOR    (x--,y)      1   J   2
-    // (x++,y++)    (x,y++)    (x--,y++)    5   3   6
+    // (x--,y--)    (x,y--)    (x++,y--)    8   4   7
+    // (x--,y)      JUGADOR    (x++,y)      2   J   1
+    // (x--,y++)    (x,y++)    (x++,y++)    6   3   5
     // 
     //LÓGICA:
     // por cada direccion avanzo mientras encuentro piezas del oponente. Si dsp encuentro una mia, 
@@ -241,7 +241,7 @@ bool playMove(GameModel &model, Square move)
     const int dx[] = { 1, -1, 0, 0, 1, -1, 1, -1 }; 
     const int dy[] = { 0, 0, 1, -1, 1, 1, -1, -1 }; 
 
-    for (int dir = 0; dir < 8; dir++)
+    for (int dir = 0; dir < BOARD_SIZE; dir++)
     {
         Square current = move;
         current.x += dx[dir];
