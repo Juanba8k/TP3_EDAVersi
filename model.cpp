@@ -109,11 +109,8 @@ void getValidMoves(GameModel &model, Moves &validMoves)
             { // me paro diciendo que la pieza no esta vacia y es mia, me interesa que pase enemigo-vacia
                 continue;
             }
-
+            
             checkIndex(model, validMoves, move, '1', playerPiece);
-            printf("hola %d,%d",move.x,move.y);
-            fflush(stdout);
-
             checkIndex(model, validMoves, move, '2', playerPiece);
             checkIndex(model, validMoves, move, '3', playerPiece);
             checkIndex(model, validMoves, move, '4', playerPiece);
@@ -202,19 +199,6 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
         }
     }
 }
-/**
- * a analizar
- * 1) está vacia
- * 2) al lado tiene una pieza del equipo contrario en x
- *  2.1) al lado tiene una del equipo contrario en Y
- *  2.2) si no tiene, no valido
- */
-/* lo del programa antiguo // +++ TEST
-                // Lists all empty squares...
-                if (getBoardPiece(model, move) == PIECE_EMPTY)
-                    validMoves.push_back(move);
-                // --- TEST
-                */
 
 bool playMove(GameModel &model, Square move)
 {
