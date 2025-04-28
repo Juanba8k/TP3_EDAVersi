@@ -14,6 +14,7 @@ Square getBestMove(GameModel &model)
 {
     // To-do: your code goes here...
 
+    
 
     // +++ TEST
     // Returns a random valid move...
