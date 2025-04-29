@@ -203,10 +203,7 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
 bool playMove(GameModel &model, Square move)
 {
     // Set game piece
-    Piece piece =
-        (getCurrentPlayer(model) == PLAYER_WHITE)
-            ? PIECE_WHITE
-            : PIECE_BLACK;
+    Piece piece = (getCurrentPlayer(model) == PLAYER_WHITE) ? PIECE_WHITE : PIECE_BLACK;
     Piece opponentPiece = (piece == PIECE_WHITE) ? PIECE_BLACK : PIECE_WHITE;
     
     setBoardPiece(model, move, piece);
@@ -230,6 +227,7 @@ bool playMove(GameModel &model, Square move)
         Square current = move;
         current.x += dx[dir];
         current.y += dy[dir];
+
         bool opponentBetween = false;
 
         // Move in the direction while we find opponent's pieces
@@ -242,13 +240,14 @@ bool playMove(GameModel &model, Square move)
 
         // If we find one of our own pieces after passing over at least one opponent's piece, 
         // we go backwards and flip all the opponent's pieces
-        if (opponentBetween && isSquareValid(current) && getBoardPiece(model, current) == piece)
+        if (opponentBetween && isSquareValid(current) && (getBoardPiece(model, current) == piece))
         {
             Square flip = move;
             flip.x += dx[dir];
             flip.y += dy[dir];
 
-            while (!(flip.x == current.x && flip.y == current.y))
+         //   while (!(flip.x == current.x && flip.y == current.y))
+            while (isSquareValid(flip)&& !(flip.x == current.x && flip.y == current.y))
             {
                 setBoardPiece(model, flip, piece);
                 flip.x += dx[dir];

@@ -39,6 +39,8 @@
 
     };
 
+#define
+
 
 Square getBestMove(GameModel &model)
 {
@@ -51,7 +53,9 @@ Square getBestMove(GameModel &model)
      * SI ES NEGATIVO, HAY MAS PIEZAS NEGRAS. SI ES 0, EMPATE.
      */
 
+    //deberia usar getValidMoves
 
+    GameModel 
     
     // To-do: your code goes here...
 
