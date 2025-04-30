@@ -8,10 +8,10 @@
 #include "model.h"
 #include "raylib.h"
 #include <iostream>
-/**
- * @brief comentar mejor
- */
-void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece);
+
+#define DIRECTIONS 8
+
+void checkIndex(GameModel& model, Moves& validMoves, Square move, int dx, int dy, int playerPiece);
 
 void initModel(GameModel &model)
 {
@@ -98,11 +98,15 @@ void getValidMoves(GameModel &model, Moves &validMoves)
     int playerPiece = (getCurrentPlayer(model) == PLAYER_WHITE) ? PIECE_WHITE : PIECE_BLACK;
     // int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
 
+    const int dx[] = { 1, -1, 0, 0, 1, -1, 1, -1 };
+    const int dy[] = { 0, 0, 1, -1, 1, 1, -1, -1 };
+
     for (int y = 0; y < BOARD_SIZE; y++)
+    {
         for (int x = 0; x < BOARD_SIZE; x++)
         {
-            Square move = {x, y};
-            if(!isSquareValid(move)){
+            Square move = { x, y };
+            if (!isSquareValid(move)) {
                 continue;
             }
             if (getBoardPiece(model, move) != playerPiece)
@@ -110,8 +114,9 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                 continue;
             }
 
+            /*
             checkIndex(model, validMoves, move, '1', playerPiece);
-            printf("hola %d,%d",move.x,move.y);
+            printf("hola %d,%d", move.x, move.y);
             fflush(stdout);
 
             checkIndex(model, validMoves, move, '2', playerPiece);
@@ -121,15 +126,28 @@ void getValidMoves(GameModel &model, Moves &validMoves)
             checkIndex(model, validMoves, move, '6', playerPiece);
             checkIndex(model, validMoves, move, '7', playerPiece);
             checkIndex(model, validMoves, move, '8', playerPiece);
+            */
+
+            for (int dir = 0; dir < DIRECTIONS; dir++)
+            {
+                printf("hola %d,%d\n", move.x, move.y);
+                fflush(stdout);
+                checkIndex(model, validMoves, move, dx[dir], dy[dir], playerPiece);
+            }
         }
+    }
 }
 
-void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion, int playerPiece)
+/**
+ * @brief comentar mejor
+ */
+void checkIndex(GameModel &model, Moves &validMoves, Square move, int dx, int dy, int playerPiece)
 {
 
-    bool flagOut = false, contraryFlag = false;
+    bool contraryFlag = false;
     Square indexMove = move;
 
+    /*
     while (!flagOut)
     {
 
@@ -200,7 +218,32 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, char operacion
         {
             contraryFlag = true;
         }
+    }*/
+    indexMove.x += dx;
+    indexMove.y += dy;
+
+    while (isSquareValid(indexMove))
+    {
+        int piece = getBoardPiece(model, indexMove);
+        if (piece == playerPiece)
+        {
+            break;
+        }
+        else if (piece == PIECE_EMPTY)
+        {
+            if (contraryFlag == true)
+            {
+                validMoves.push_back(indexMove);
+            }
+            break;
+        }
+        else{
+            contraryFlag = true; 
+        }
+        indexMove.x += dx;
+        indexMove.y += dy;
     }
+
 }
 /**
  * a analizar
@@ -241,7 +284,7 @@ bool playMove(GameModel &model, Square move)
     const int dx[] = { 1, -1, 0, 0, 1, -1, 1, -1 }; 
     const int dy[] = { 0, 0, 1, -1, 1, 1, -1, -1 }; 
 
-    for (int dir = 0; dir < BOARD_SIZE; dir++)
+    for (int dir = 0; dir < DIRECTIONS; dir++)
     {
         Square current = move;
         current.x += dx[dir];
