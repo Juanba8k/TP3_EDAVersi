@@ -127,11 +127,10 @@ void getValidMoves(GameModel &model, Moves &validMoves)
             checkIndex(model, validMoves, move, '7', playerPiece);
             checkIndex(model, validMoves, move, '8', playerPiece);
             */
-
+            printf("hola %d,%d\n", move.x, move.y);
+            fflush(stdout);
             for (int dir = 0; dir < DIRECTIONS; dir++)
             {
-                printf("hola %d,%d\n", move.x, move.y);
-                fflush(stdout);
                 checkIndex(model, validMoves, move, dx[dir], dy[dir], playerPiece);
             }
         }
@@ -301,13 +300,13 @@ bool playMove(GameModel &model, Square move)
 
         // If we find one of our own pieces after passing over at least one opponent's piece, 
         // we go backwards and flip all the opponent's pieces
-        if (opponentBetween && isSquareValid(current) && getBoardPiece(model, current) == piece)
+        if (opponentBetween && isSquareValid(current) && (getBoardPiece(model, current) == piece))
         {
             Square flip = move;
             flip.x += dx[dir];
             flip.y += dy[dir];
 
-            while (!(flip.x == current.x && flip.y == current.y))
+            while (isSquareValid(flip) && !(flip.x == current.x && flip.y == current.y))
             {
                 setBoardPiece(model, flip, piece);
                 flip.x += dx[dir];
