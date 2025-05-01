@@ -31,7 +31,8 @@
                     }
                 }
             }
-
+            int alfa;
+            int betha;
             binary_tree* nextChildNode;
             binary_tree* nextBrotherNodee;
         private:
@@ -39,7 +40,8 @@
 
     };
 
-#define
+#define NODE 500
+#define DEPTH 100
 
 
 Square getBestMove(GameModel &model)
