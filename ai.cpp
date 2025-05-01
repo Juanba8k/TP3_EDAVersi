@@ -56,11 +56,11 @@ Square getBestMove(GameModel &model)
      */
 
     //deberia usar getValidMoves
-
+    /*
     GameModel 
     
     // To-do: your code goes here...
-
+    */
     // +++ TEST
     // Returns a random valid move...
     Moves validMoves;
