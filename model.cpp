@@ -142,7 +142,6 @@ void getValidMoves(GameModel &model, Moves &validMoves)
  */
 void checkIndex(GameModel &model, Moves &validMoves, Square move, int dx, int dy, int playerPiece)
 {
-
     bool contraryFlag = false;
     Square indexMove = move;
 
