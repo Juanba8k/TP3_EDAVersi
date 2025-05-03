@@ -94,7 +94,6 @@ bool isSquareValid(Square square)
 void getValidMoves(GameModel &model, Moves &validMoves)
 {
 
-    // To-do: your code goes here...
     int playerPiece = (getCurrentPlayer(model) == PLAYER_WHITE) ? PIECE_WHITE : PIECE_BLACK;
     // int countePlayerPiece = (getCurrentPlayer(model)== PLAYER_WHITE )? PIECE_BLACK : PIECE_WHITE;
 
@@ -114,19 +113,6 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                 continue;
             }
 
-            /*
-            checkIndex(model, validMoves, move, '1', playerPiece);
-            printf("hola %d,%d", move.x, move.y);
-            fflush(stdout);
-
-            checkIndex(model, validMoves, move, '2', playerPiece);
-            checkIndex(model, validMoves, move, '3', playerPiece);
-            checkIndex(model, validMoves, move, '4', playerPiece);
-            checkIndex(model, validMoves, move, '5', playerPiece);
-            checkIndex(model, validMoves, move, '6', playerPiece);
-            checkIndex(model, validMoves, move, '7', playerPiece);
-            checkIndex(model, validMoves, move, '8', playerPiece);
-            */
             printf("hola %d,%d\n", move.x, move.y);
             fflush(stdout);
             for (int dir = 0; dir < DIRECTIONS; dir++)
@@ -145,78 +131,6 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, int dx, int dy
     bool contraryFlag = false;
     Square indexMove = move;
 
-    /*
-    while (!flagOut)
-    {
-
-        if (operacion == '1')//DERECHA
-        {
-            indexMove.x++;
-        }
-        else if (operacion == '2')///IZQUIERDA
-        {
-            indexMove.x--;
-        }
-        else if (operacion == '3')//ABAJO
-        { // en y 3
-            indexMove.y++;
-        }
-        else if (operacion == '4')//ARRIBA
-        { // 4
-            indexMove.y--;
-        }
-        else if (operacion == '5')//DIAGONAL ABAJO DERECHA
-        { // diagonal
-            indexMove.x++;
-            indexMove.y++;
-        }
-        else if (operacion == '6')//DIAGONAL ABAJO IZQUIERDA
-        { // 6
-            indexMove.x--;
-            indexMove.y++;
-        }
-        else if (operacion == '7')//DIAGONAL ARRIBA DERECHA
-        { // 7
-            indexMove.x++;
-            indexMove.y--;
-        }
-        else //DIAGONAL ARRIBA IZQUIERDA
-        { // 8
-            indexMove.x--;
-            indexMove.y--;
-        }
-        std::cout << indexMove.x << " " << indexMove.y << std::endl;
-        if (!isSquareValid(indexMove))
-        { // no es casilla valida, está en borde derecho, salgo
-            break;
-            flagOut = true;
-        }
-
-        int indexPiece = getBoardPiece(model, indexMove);
-
-        if (indexPiece == playerPiece)
-        { // si es mia, no puedo mover
-            flagOut = true;
-        }
-        else if (indexPiece == PIECE_EMPTY)
-        { // si esta vacia me fijo si es al lado de la que estoy reevisando o si ya pasaron por otras piezas enemiga
-
-            if (contraryFlag == true)
-            {
-
-                validMoves.push_back(indexMove);
-                flagOut = true;
-            }
-            else
-            {
-                flagOut = true;
-            }
-        }
-        else
-        {
-            contraryFlag = true;
-        }
-    }*/
     indexMove.x += dx;
     indexMove.y += dy;
 
@@ -243,19 +157,6 @@ void checkIndex(GameModel &model, Moves &validMoves, Square move, int dx, int dy
     }
 
 }
-/**
- * a analizar
- * 1) está vacia
- * 2) al lado tiene una pieza del equipo contrario en x
- *  2.1) al lado tiene una del equipo contrario en Y
- *  2.2) si no tiene, no valido
- */
-/* lo del programa antiguo // +++ TEST
-                // Lists all empty squares...
-                if (getBoardPiece(model, move) == PIECE_EMPTY)
-                    validMoves.push_back(move);
-                // --- TEST
-                */
 
 bool playMove(GameModel &model, Square move)
 {
@@ -267,16 +168,7 @@ bool playMove(GameModel &model, Square move)
     Piece opponentPiece = (piece == PIECE_WHITE) ? PIECE_BLACK : PIECE_WHITE;
     
     setBoardPiece(model, move, piece);
-
-    //DIAGRAMA
-    // (x--,y--)    (x,y--)    (x++,y--)    8   4   7
-    // (x--,y)      JUGADOR    (x++,y)      2   J   1
-    // (x--,y++)    (x,y++)    (x++,y++)    6   3   5
-    // 
-    //LÓGICA:
-    // por cada direccion avanzo mientras encuentro piezas del oponente. Si dsp encuentro una mia, 
-    // retrocedo y flippeo piezas del oponente q estaban en el medio
-    
+        
     // Flip opponent´s pieces
     // Define possible moves
     const int dx[] = { 1, -1, 0, 0, 1, -1, 1, -1 }; 
