@@ -9,9 +9,9 @@
 
 #include "ai.h"
 #include "controller.h"
-#include <set>
 
-    class binary_tree{
+/*
+    class GameState{
         public:
             int teamDiferentiator(){
                 int WhiteCounter =0;
@@ -33,16 +33,19 @@
             }
             int alfa;
             int betha;
-            binary_tree* nextChildNode;
-            binary_tree* nextBrotherNodee;
         private:
             Piece board[BOARD_SIZE][BOARD_SIZE];
 
+
     };
 
-#define NODE 500
-#define DEPTH 100
+*/
 
+#define NODE 500
+#define MAX_DEPTH 100
+#define MAX_NODE 100
+
+void alphaBethaLogic(int* node, int depth, bool max, GameModel Board, Square move);
 
 Square getBestMove(GameModel &model)
 {
@@ -57,7 +60,8 @@ Square getBestMove(GameModel &model)
 
     //deberia usar getValidMoves
     /*
-    GameModel 
+    int i = 0;
+    alphaBethaLogic()
     
     // To-do: your code goes here...
     */
@@ -69,4 +73,44 @@ Square getBestMove(GameModel &model)
     int index = rand() % validMoves.size();
     return validMoves[index];
     // --- TEST*/
+}
+
+int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE]){
+    int WhiteCounter =0;
+    int BlackCounter =0;
+    for(int y=0; y<BOARD_SIZE;y++){
+        for(int x=0; x<BOARD_SIZE;x++){
+            if(board[y][x] == PIECE_BLACK) BlackCounter++;
+            if(board[y][x] == PIECE_WHITE) WhiteCounter++;
+        }
+    }
+    return WhiteCounter-BlackCounter;
+}
+
+void alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move){
+
+    Moves validMoves;
+    getValidMoves(board, validMoves);
+    playMove(board, move);
+    (*node)++;
+
+    if (((*node) >= MAX_NODE)||(depth >= MAX_DEPTH)){
+
+        return teamDiferentiator(board.board);
+        
+    }
+
+
+    if (max){ //tengo que quedarme con el nodo más grande
+        for(Square moveMax : validMoves){
+
+            alphaBethaLogic(node,depth+1,false,board, moveMax);
+        }
+    }else{ //teengo que quedarmee con el nodo más chico
+        for(Square moveMin : validMoves){
+            alphaBethaLogic(node,depth+1,true,board, moveMin);
+        }
+
+    }
+    return; //de seguridad
 }
