@@ -9,7 +9,7 @@
 
 #include "ai.h"
 #include "controller.h"
-
+#include<unistd.h>
 /*
     class GameState{
         public:
@@ -69,7 +69,7 @@ Square getBestMove(GameModel &model)
     // Returns a random valid move...
     Moves validMoves;
     getValidMoves(model, validMoves);
-
+    sleep(2);
     int index = rand() % validMoves.size();
     return validMoves[index];
     // --- TEST*/
@@ -86,7 +86,7 @@ int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE]){
     }
     return WhiteCounter-BlackCounter;
 }
-
+/*
 void alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move){
 
     Moves validMoves;
@@ -113,4 +113,4 @@ void alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square mov
 
     }
     return; //de seguridad
-}
+}*/
