@@ -79,7 +79,6 @@ Piece getBoardPiece(GameModel &model, Square square)
 
 void setBoardPiece(GameModel &model, Square square, Piece piece)
 {
-    std::cout<< square.x << " " <<square.y << std::endl;
     model.board[square.y][square.x] = piece;
 }
 
@@ -113,8 +112,6 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                 continue;
             }
 
-            printf("hola %d,%d\n", move.x, move.y);
-            fflush(stdout);
             for (int dir = 0; dir < DIRECTIONS; dir++)
             {
                 checkIndex(model, validMoves, move, dx[dir], dy[dir], playerPiece);

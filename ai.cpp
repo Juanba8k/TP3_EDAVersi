@@ -41,9 +41,9 @@
 
 */
 
-#define NODE 500
-#define MAX_DEPTH 100
-#define MAX_NODE 100
+#define NODE 1000 //veer porque la cota no funciona
+#define MAX_DEPTH 10 //tampoco funciona
+#define MAX_NODE 500
 #define INVALID_SQUARE {-11111,-11111}
 #define INF 99999
 
@@ -84,6 +84,9 @@ Square getBestMove(GameModel &model)
    int node=0;
    BestMove move;
    move = alphaBethaLogic(&node,0,true, model, INVALID_SQUARE, (-INF), (INF));
+   printf("total de nodos %d ",node);
+   fflush(stdout);
+
    return move.returnMove;
    /*
     // +++ TEST
@@ -123,9 +126,10 @@ BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square
     getValidMoves(board, validMoves);
 
     if (((*node) >= MAX_NODE)||(depth >= MAX_DEPTH)){
+        printf("nodos: %d",(*node));
+        fflush(stdout);
         importantValues.actualValue = teamDiferentiator(board.board);
         return importantValues;
-        
     }
     if(validMoves.empty()){
         importantValues.actualValue = teamDiferentiator(board.board);
