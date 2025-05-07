@@ -44,8 +44,24 @@
 #define NODE 500
 #define MAX_DEPTH 100
 #define MAX_NODE 100
+#define INVALID_SQUARE {-11111,-11111}
+#define INF 99999
 
-void alphaBethaLogic(int* node, int depth, bool max, GameModel Board, Square move);
+typedef struct BestMove{
+    Square returnMove;
+    int actualValue;
+};
+/**
+ * 
+ * @brief AlphaBetha algoritm
+ * @param node pointer to the node counter
+ * @param depth 
+ * @param max bool value, if true, it is maximizing
+ * @param Board Has the game board with the game state
+ * @param move
+ * 
+ */
+BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel Board, Square move, int alfa, int betha);
 
 Square getBestMove(GameModel &model)
 {
@@ -65,6 +81,11 @@ Square getBestMove(GameModel &model)
     
     // To-do: your code goes here...
     */
+   int node=0;
+   BestMove move;
+   move = alphaBethaLogic(&node,0,true, model, INVALID_SQUARE, (-INF), (INF));
+   return move.returnMove;
+   /*
     // +++ TEST
     // Returns a random valid move...
     Moves validMoves;
@@ -73,6 +94,7 @@ Square getBestMove(GameModel &model)
     int index = rand() % validMoves.size();
     return validMoves[index];
     // --- TEST*/
+    
 }
 
 int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE]){
@@ -86,31 +108,66 @@ int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE]){
     }
     return WhiteCounter-BlackCounter;
 }
-/*
-void alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move){
+
+BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move, int alfa, int betha){
 
     Moves validMoves;
-    getValidMoves(board, validMoves);
+    int actualValue;
+    BestMove importantValues ={{0,0},0};
+    Square bestMove;
+
+    if (isSquareValid(move)){ //Make sure it is working on valid moves and skips the first move
     playMove(board, move);
-    (*node)++;
+    }
+
+    getValidMoves(board, validMoves);
 
     if (((*node) >= MAX_NODE)||(depth >= MAX_DEPTH)){
-
-        return teamDiferentiator(board.board);
+        importantValues.actualValue = teamDiferentiator(board.board);
+        return importantValues;
         
     }
+    if(validMoves.empty()){
+        importantValues.actualValue = teamDiferentiator(board.board);
+        return importantValues;
+    }
 
+    (*node)++;
 
     if (max){ //tengo que quedarme con el nodo más grande
+
         for(Square moveMax : validMoves){
+            
+            importantValues = alphaBethaLogic(node,depth+1,false,board, moveMax, alfa, betha);
 
-            alphaBethaLogic(node,depth+1,false,board, moveMax);
-        }
-    }else{ //teengo que quedarmee con el nodo más chico
-        for(Square moveMin : validMoves){
-            alphaBethaLogic(node,depth+1,true,board, moveMin);
-        }
+            if (importantValues.actualValue>alfa){
+                alfa = importantValues.actualValue;
+                bestMove = moveMax;
+            }
+            if (alfa >= betha){
+                break;
+            }
 
+        }
+        importantValues.returnMove = bestMove;
+        importantValues.actualValue = alfa;
+        return importantValues;
     }
-    return; //de seguridad
-}*/
+    else{ //tengo que quedarmee con el nodo más chico
+
+        for(Square moveMin : validMoves){
+            importantValues = alphaBethaLogic(node,depth+1,true,board, moveMin, alfa, betha);
+
+            if(importantValues.actualValue<betha){
+                betha = importantValues.actualValue;
+                bestMove = moveMin;
+            }
+            if (alfa >= betha){
+                break;}
+        }
+        importantValues.returnMove = bestMove;
+        importantValues.actualValue=betha; 
+        return importantValues;
+    }
+    return importantValues; //de seguridad
+}
