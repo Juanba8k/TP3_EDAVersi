@@ -245,8 +245,7 @@ bool playMove(GameModel& model, Square move)
         ? PLAYER_BLACK
         : PLAYER_WHITE;
 
-    // Game over?
-    // Moves validMoves; -> ver xq me tira error ??
+    // Game over? 
     getValidMoves(model, validMoves);
 
     if (validMoves.size() == 0)
