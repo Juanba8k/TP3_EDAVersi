@@ -23,7 +23,9 @@ direcciones.
 
 ## Documentación adicional
 
-[Aquí.]
+Se reacurrió a videos informativos para la implementación de poda alpha-beta y algoritmo minimax
+ * https://youtu.be/I0y-TGehf-4?si=Y7nc5RNucqB2leI7
+ * https://youtu.be/QJjM7EKDRuc?si=zMkmov9msS09ernM
 
 ## Bonus points
 
