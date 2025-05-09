@@ -29,86 +29,102 @@ Square getBestMove(GameModel &model)
     /**
      * @cite https://youtu.be/I0y-TGehf-4?si=Y7nc5RNucqB2leI7
      * @cite https://youtu.be/QJjM7EKDRuc?si=zMkmov9msS09ernM
-     * 
+     *
      */
 
-   int node=0;
-   BestMove move;
-   move = alphaBethaLogic(&node,0,true, model, INVALID_SQUARE, (-INF), (INF));
+    int node = 0;
+    BestMove move;
+    move = alphaBethaLogic(&node, 0, true, model, INVALID_SQUARE, (-INF), (INF));
 
-   return move.returnMove;
-    
+    return move.returnMove;
 }
 
-int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE]){
-    int WhiteCounter =0;
-    int BlackCounter =0;
-    for(int y=0; y<BOARD_SIZE;y++){
-        for(int x=0; x<BOARD_SIZE;x++){
-            if(board[y][x] == PIECE_BLACK) BlackCounter++;
-            if(board[y][x] == PIECE_WHITE) WhiteCounter++;
+int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE])
+{
+    int WhiteCounter = 0;
+    int BlackCounter = 0;
+    for (int y = 0; y < BOARD_SIZE; y++)
+    {
+        for (int x = 0; x < BOARD_SIZE; x++)
+        {
+            if (board[y][x] == PIECE_BLACK)
+                BlackCounter++;
+            if (board[y][x] == PIECE_WHITE)
+                WhiteCounter++;
         }
     }
-    return WhiteCounter-BlackCounter;
+    return WhiteCounter - BlackCounter;
 }
 
-BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move, int alfa, int betha){
+BestMove alphaBethaLogic(int *node, int depth, bool max, GameModel board, Square move, int alfa, int betha)
+{
     Moves validMoves;
     int actualValue;
-    BestMove importantValues ={{0,0},0};
+    BestMove importantValues = {{0, 0}, 0};
     Square bestMove;
 
-    if (isSquareValid(move)){ //Make sure it is working on valid moves and skips the first move
-    playMove(board, move);
+    if (isSquareValid(move))
+    { // Make sure it is working on valid moves and skips the first move
+        playMove(board, move);
     }
 
     getValidMoves(board, validMoves);
 
-    if (((*node) >= MAX_NODE)||(depth >= MAX_DEPTH)){
+    if (((*node) >= MAX_NODE) || (depth >= MAX_DEPTH))
+    {
         importantValues.actualValue = teamDiferentiator(board.board);
         return importantValues;
     }
-    if(validMoves.empty()){
+    if (validMoves.empty())
+    {
         importantValues.actualValue = teamDiferentiator(board.board);
         return importantValues;
     }
 
     (*node)++;
 
-    if (max){ //Max mode
+    if (max)
+    { // Max mode
 
-        for(Square moveMax : validMoves){
-            
-            importantValues = alphaBethaLogic(node,depth+1,false,board, moveMax, alfa, betha);
+        for (Square moveMax : validMoves)
+        {
 
-            if (importantValues.actualValue>alfa){
+            importantValues = alphaBethaLogic(node, depth + 1, false, board, moveMax, alfa, betha);
+
+            if (importantValues.actualValue > alfa)
+            {
                 alfa = importantValues.actualValue;
                 bestMove = moveMax;
             }
-            if (alfa >= betha){
+            if (alfa >= betha)
+            {
                 break;
             }
-
         }
         importantValues.returnMove = bestMove;
         importantValues.actualValue = alfa;
         return importantValues;
     }
-    else{ //Min mode
+    else
+    { // Min mode
 
-        for(Square moveMin : validMoves){
-            importantValues = alphaBethaLogic(node,depth+1,true,board, moveMin, alfa, betha);
+        for (Square moveMin : validMoves)
+        {
+            importantValues = alphaBethaLogic(node, depth + 1, true, board, moveMin, alfa, betha);
 
-            if(importantValues.actualValue<betha){
+            if (importantValues.actualValue < betha)
+            {
                 betha = importantValues.actualValue;
                 bestMove = moveMin;
             }
-            if (alfa >= betha){
-                break;}
+            if (alfa >= betha)
+            {
+                break;
+            }
         }
         importantValues.returnMove = bestMove;
-        importantValues.actualValue=betha; 
+        importantValues.actualValue = betha;
         return importantValues;
     }
-    return importantValues; //Safety Return.
+    return importantValues; // Safety Return.
 }
