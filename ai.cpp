@@ -41,16 +41,15 @@
 
 */
 
-#define NODE 1000 //veer porque la cota no funciona
 #define MAX_DEPTH 10 //tampoco funciona
-#define MAX_NODE 500
+#define MAX_NODE 10000
 #define INVALID_SQUARE {-11111,-11111}
 #define INF 99999
 
 typedef struct BestMove{
     Square returnMove;
     int actualValue;
-};
+} BestMove;
 /**
  * 
  * @brief AlphaBetha algoritm
@@ -61,7 +60,7 @@ typedef struct BestMove{
  * @param move
  * 
  */
-BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel Board, Square move, int alfa, int betha);
+BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel Board, Square move, int alfa, int betha, GameModel &model);
 
 Square getBestMove(GameModel &model)
 {
@@ -83,7 +82,7 @@ Square getBestMove(GameModel &model)
     */
    int node=0;
    BestMove move;
-   move = alphaBethaLogic(&node,0,true, model, INVALID_SQUARE, (-INF), (INF));
+   move = alphaBethaLogic(&node,0,true, model, INVALID_SQUARE, (-INF), (INF), model);
    printf("total de nodos %d ",node);
    fflush(stdout);
 
@@ -112,8 +111,7 @@ int teamDiferentiator(Piece board[BOARD_SIZE][BOARD_SIZE]){
     return WhiteCounter-BlackCounter;
 }
 
-BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move, int alfa, int betha){
-
+BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square move, int alfa, int betha, GameModel &model){
     Moves validMoves;
     int actualValue;
     BestMove importantValues ={{0,0},0};
@@ -126,7 +124,9 @@ BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square
     getValidMoves(board, validMoves);
 
     if (((*node) >= MAX_NODE)||(depth >= MAX_DEPTH)){
-        printf("nodos: %d",(*node));
+        //printf("nodos: %d",(*node));
+
+        depth >= MAX_DEPTH ? printf("1 ") : printf("0 %d", *node);
         fflush(stdout);
         importantValues.actualValue = teamDiferentiator(board.board);
         return importantValues;
@@ -142,7 +142,7 @@ BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square
 
         for(Square moveMax : validMoves){
             
-            importantValues = alphaBethaLogic(node,depth+1,false,board, moveMax, alfa, betha);
+            importantValues = alphaBethaLogic(node,depth+1,false,board, moveMax, alfa, betha,model);
 
             if (importantValues.actualValue>alfa){
                 alfa = importantValues.actualValue;
@@ -160,7 +160,7 @@ BestMove alphaBethaLogic(int* node, int depth, bool max, GameModel board, Square
     else{ //tengo que quedarmee con el nodo más chico
 
         for(Square moveMin : validMoves){
-            importantValues = alphaBethaLogic(node,depth+1,true,board, moveMin, alfa, betha);
+            importantValues = alphaBethaLogic(node,depth+1,true,board, moveMin, alfa, betha,model);
 
             if(importantValues.actualValue<betha){
                 betha = importantValues.actualValue;
