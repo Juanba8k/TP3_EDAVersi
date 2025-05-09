@@ -15,6 +15,7 @@ direcciones.
 
 ## Parte 2: Implementación del motor de IA
 
+La ia se implemento de forma recursiva. Esto  Al mismo tiempo, se planteo desde el inicio con el sistema alfa betha. 
 [Enumera aquí las consideraciones que tomaste a la hora de implementar el algoritmo minimax.]
 
 ## Parte 3: Poda del árbol

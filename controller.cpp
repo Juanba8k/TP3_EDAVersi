@@ -61,7 +61,7 @@ bool updateView(GameModel &model)
     {
         // AI player
         Square square = getBestMove(model);
-        std::cout << square.x << " " << square.y << std::endl; 
+      //  std::cout << square.x << " " << square.y << std::endl; 
         playMove(model, square);
     }
 
