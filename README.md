@@ -2,13 +2,16 @@
 
 ## Integrantes del grupo y contribución al trabajo de cada integrante
 
-* [Nombre]: [contribución]
+* Juan: implementación del modelo de ai mediante el algoritmo alpha-beta
 
-[completar]
+* Ana: implementación de funciones que validan los movimientos posibles de cada jugador y el algoritmo del juego al atrapar las piezas del oponente y
+convertirlas en propias para sumar puntos y ganar el juego. 
 
 ## Parte 1: Generación de movimientos válidos y algoritmo de jugada
 
-[Enumera aquí las pruebas que hiciste para validar que tu generador de movimientos válidos y algoritmo de jugada funcionan correctamente.]
+Para la verificación de movimientos válidos nos pusimos a jugar y comprobar que los movimientos sean correctos y no permita realizar jugadas inválidas.
+También prestamos escencial atención al algoritmo que flippea las piezas del oponente al ser atrapadas entre las propias en cualquiera de las 8 posibles
+direcciones.  
 
 ## Parte 2: Implementación del motor de IA
 
@@ -24,4 +27,4 @@
 
 ## Bonus points
 
-[Aquí.]
+Se implementó la poda alpha-beta 
