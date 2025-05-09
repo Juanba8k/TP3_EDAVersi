@@ -88,7 +88,8 @@ bool isSquareValid(Square square)
            (square.y < BOARD_SIZE);
 }
 
-void getValidMoves(GameModel& model, Moves& validMoves) {
+void getValidMoves(GameModel &model, Moves &validMoves)
+{
 
     validMoves.clear();
 
@@ -97,49 +98,49 @@ void getValidMoves(GameModel& model, Moves& validMoves) {
     Piece opponentPiece = (currentPlayer == PLAYER_WHITE) ? PIECE_BLACK : PIECE_WHITE;
 
     // Possible directions
-    const int directions[8][2] = {{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1},{-1, 0},{-1, 1}};
+    const int directions[8][2] = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 
     // Check each square on the board
-    for (int y = 0; y < BOARD_SIZE; y++) 
+    for (int y = 0; y < BOARD_SIZE; y++)
     {
-        for (int x = 0; x < BOARD_SIZE; x++) 
+        for (int x = 0; x < BOARD_SIZE; x++)
         {
-            Square square = { x, y };
+            Square square = {x, y};
 
             // check if square is empty
-            if (getBoardPiece(model, square) != PIECE_EMPTY) 
+            if (getBoardPiece(model, square) != PIECE_EMPTY)
             {
                 continue;
             }
 
             bool isValidMove = false;
 
-            for (int dir = 0; dir < DIRECTIONS; dir++) 
+            for (int dir = 0; dir < DIRECTIONS; dir++)
             {
                 int dx = directions[dir][0];
                 int dy = directions[dir][1];
 
-                // Movee one position in the current direction 
-                Square nextSquare = { x + dx, y + dy };
+                // Move one position in the current direction
+                Square nextSquare = {x + dx, y + dy};
 
                 // Check if the square is valid and contains opponent´s piece
-                if (!isSquareValid(nextSquare) || getBoardPiece(model, nextSquare) != opponentPiece) 
+                if (!isSquareValid(nextSquare) || getBoardPiece(model, nextSquare) != opponentPiece)
                 {
                     continue;
                 }
 
                 // Continue in that direction looking for your own piece
                 int steps = 2;
-                while (true) 
+                while (true)
                 {
-                    Square checkSquare = { x + (dx * steps), y + (dy * steps) };
+                    Square checkSquare = {x + (dx * steps), y + (dy * steps)};
 
-                    if (!isSquareValid(checkSquare) || getBoardPiece(model, checkSquare) == PIECE_EMPTY) 
+                    if (!isSquareValid(checkSquare) || getBoardPiece(model, checkSquare) == PIECE_EMPTY)
                     {
                         break;
                     }
 
-                    if (getBoardPiece(model, checkSquare) == currentPiece) 
+                    if (getBoardPiece(model, checkSquare) == currentPiece)
                     {
                         isValidMove = true;
                         break;
@@ -149,14 +150,14 @@ void getValidMoves(GameModel& model, Moves& validMoves) {
                 }
 
                 // If we find a valid move, we don´t need to check the other directions
-                if (isValidMove) 
+                if (isValidMove)
                 {
                     break;
                 }
             }
 
             // Add valid move to the list
-            if (isValidMove) 
+            if (isValidMove)
             {
                 validMoves.push_back(square);
             }
@@ -164,22 +165,22 @@ void getValidMoves(GameModel& model, Moves& validMoves) {
     }
 }
 
-bool playMove(GameModel& model, Square move)
+bool playMove(GameModel &model, Square move)
 {
     Moves validMoves;
     getValidMoves(model, validMoves);
 
     bool isValid = false;
-    for (const Square& validMove : validMoves) 
+    for (const Square &validMove : validMoves)
     {
-        if (validMove.x == move.x && validMove.y == move.y) 
+        if (validMove.x == move.x && validMove.y == move.y)
         {
             isValid = true;
             break;
         }
     }
 
-    if (!isValid) 
+    if (!isValid)
     {
         return false;
     }
@@ -190,16 +191,16 @@ bool playMove(GameModel& model, Square move)
 
     setBoardPiece(model, move, currentPiece);
 
-    const int directions[8][2] = {{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1},{-1, 0},{-1, 1}};
+    const int directions[8][2] = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 
-    for (int d = 0; d < DIRECTIONS; d++) 
+    for (int d = 0; d < DIRECTIONS; d++)
     {
         int dx = directions[d][0];
         int dy = directions[d][1];
 
-        Square nextSquare = { move.x + dx, move.y + dy };
+        Square nextSquare = {move.x + dx, move.y + dy};
 
-        if (!isSquareValid(nextSquare) || getBoardPiece(model, nextSquare) != opponentPiece) 
+        if (!isSquareValid(nextSquare) || getBoardPiece(model, nextSquare) != opponentPiece)
         {
             continue;
         }
@@ -207,15 +208,15 @@ bool playMove(GameModel& model, Square move)
         int steps = 2;
         bool foundOwnPiece = false;
 
-        while (true) 
+        while (true)
         {
-            Square checkSquare = { move.x + (dx * steps), move.y + (dy * steps) };
+            Square checkSquare = {move.x + (dx * steps), move.y + (dy * steps)};
 
-            if (!isSquareValid(checkSquare) || getBoardPiece(model, checkSquare) == PIECE_EMPTY) 
+            if (!isSquareValid(checkSquare) || getBoardPiece(model, checkSquare) == PIECE_EMPTY)
             {
                 break;
             }
-            if (getBoardPiece(model, checkSquare) == currentPiece) 
+            if (getBoardPiece(model, checkSquare) == currentPiece)
             {
                 foundOwnPiece = true;
                 break;
@@ -224,11 +225,11 @@ bool playMove(GameModel& model, Square move)
         }
 
         // If we found our own piece, flip all opponent's pieces in this direction
-        if (foundOwnPiece) 
+        if (foundOwnPiece)
         {
-            for (int i = 1; i < steps; i++) 
+            for (int i = 1; i < steps; i++)
             {
-                Square flipSquare = { move.x + (dx * i), move.y + (dy * i) };
+                Square flipSquare = {move.x + (dx * i), move.y + (dy * i)};
                 setBoardPiece(model, flipSquare, currentPiece);
             }
         }
@@ -242,15 +243,14 @@ bool playMove(GameModel& model, Square move)
     // Swap player
     model.currentPlayer =
         (model.currentPlayer == PLAYER_WHITE)
-        ? PLAYER_BLACK
-        : PLAYER_WHITE;
+            ? PLAYER_BLACK
+            : PLAYER_WHITE;
 
-    // Game over? 
+    // Game over?
     getValidMoves(model, validMoves);
 
     if (validMoves.size() == 0)
         model.gameOver = true;
 
     return true;
-
 }
