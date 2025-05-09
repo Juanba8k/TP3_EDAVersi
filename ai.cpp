@@ -78,8 +78,6 @@ BestMove alphaBethaLogic(int *node, int depth, bool max, GameModel board, Square
         playMove(board, move);
     }
 
-    getValidMoves(board, validMoves);
-
     if (((*node) >= MAX_NODE) || (depth >= MAX_DEPTH))
     { // Final case
         importantValues.actualValue = teamDiferentiator(board.board);
@@ -90,7 +88,7 @@ BestMove alphaBethaLogic(int *node, int depth, bool max, GameModel board, Square
         importantValues.actualValue = teamDiferentiator(board.board);
         return importantValues;
     }
-
+    getValidMoves(board, validMoves);
     (*node)++;
 
     if (max)
