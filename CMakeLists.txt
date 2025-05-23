@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.4)
+cmake_minimum_required(VERSION 3.16)
 project(main VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -19,7 +19,6 @@ add_executable(main main.cpp model.cpp view.cpp controller.cpp ai.cpp)
 
 # Raylib
 find_package(raylib CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
 
 target_include_directories(main PRIVATE ${raylib_INCLUDE_DIRS})
 target_link_libraries(main PRIVATE ${raylib_LIBRARIES} glfw)
